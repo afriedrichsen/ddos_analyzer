@@ -7,31 +7,33 @@ services:
     privileged: true
     command: bash -c "/usr/bin/docker-quickstart"
     deploy:
-      replicas: 4
+      replicas: 3
       resources:
         limits:
           cpus: "0.2"
           memory: 4096M
       restart_policy:
         condition: on-failure
-    ports:
-          - "8887:8888"   # Hue server
-          - "8889:8889"   # jupyter
-          - "10020:10020" # mapreduce job history server
-          - "8022:22"     # ssh
-          - "7180:7180"   # Cloudera Manager
-          - "11000:11000" # Oozie
-          - "50070:50070" # HDFS REST Namenode
-          - "50075:50075" # hdfs REST Datanode
-          - "8088:8088"   # yarn resource manager webapp address
-          - "19888:19888" # mapreduce job history webapp address
-          - "8983:8983"   # Solr console
-          - "8032:8032"   # yarn resource manager access
-          - "8042:8042"   # yarn node manager
-          - "60010:60010" # hbase
-    volumes:
-      - /data/ddos_analyzer:/data/core
-    networks:
-      - cloudera-webnet
+      ports:
+            - "8887:8888"   # Hue server
+            - "8889:8889"   # jupyter
+            - "10020:10020" # mapreduce job history server
+            - "8022:22"     # ssh
+            - "7180:7180"   # Cloudera Manager
+            - "11000:11000" # Oozie
+            - "50070:50070" # HDFS REST Namenode
+            - "50075:50075" # hdfs REST Datanode
+            - "8088:8088"   # yarn resource manager webapp address
+            - "19888:19888" # mapreduce job history webapp address
+            - "8983:8983"   # Solr console
+            - "8032:8032"   # yarn resource manager access
+            - "8042:8042"   # yarn node manager
+            - "60010:60010" # hbase
+      tty: true
+      stdin_open: true
+      volumes:
+        - /data/ddos_analyzer:/data/core
+      networks:
+       - cloudera-webnet
 networks:
   cloudera-webnet:
