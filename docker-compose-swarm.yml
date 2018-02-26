@@ -1,5 +1,6 @@
 version: "3.4"
 services:
+# Here is our image for the data lake backend (Cloudera Quickstart VM).
   datalake:
     image: cloudera/quickstart:latest
     ports:
@@ -34,6 +35,7 @@ services:
           memory: 4096M
       restart_policy:
         condition: on-failure
+  # Here is our ZooKeeper Cluster. Needed for Kafka.
   zoo1:
     image: zookeeper
     ports:
@@ -59,14 +61,19 @@ services:
     environment:
       ZOO_MY_ID: 3
       ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
+  # Here is our Kafka cluster. In swarm mode we can only scale in "global" mode (one kafka cluster per swarm node).
   kafka:
-    image: afriedrichsen/kafka
+    image: wurstmeister/kafka
+    deploy:
+      mode: global
     depends_on:
       zoo1
     ports:
-      - "9092"
+      - target: 9094
+        published: 9094
+        protocol: tcp
+        mode: host
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: 10.0.1.42
       HOSTNAME_COMMAND: "docker info | grep ^Name: | cut -d' ' -f 2"
       KAFKA_ZOOKEEPER_CONNECT: zoo1:2181,zoo2:2181,zoo3:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
