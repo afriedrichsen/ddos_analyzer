@@ -46,7 +46,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Cloudera](https://www.cloudera.com/documentation/enterprise/5-6-x/topics/quickstart_docker_container.html) - The web framework used
+* [Cloudera Docker Image](https://www.cloudera.com/documentation/enterprise/5-6-x/topics/quickstart_docker_container.html) - A single-node deployment of the Cloudera open-source distribution, including CDH and Cloudera Manager.
 * [Apache Flume](https://flume.apache.org/) - Flume is a distributed, reliable, and available service for efficiently collecting, aggregating, and moving large amounts of log data. Used for aggregating/indexing log events before writing to Datalake/HDFS.
 * [Apache Kafka](https://kafka.apache.org/) - Message system used to fetch and transmit logs from endpoints to Big Data infrastructure.
 

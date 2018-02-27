@@ -37,37 +37,67 @@ services:
         condition: on-failure
   # Here is our ZooKeeper Cluster. Needed for Kafka.
   zoo1:
-    image: zookeeper
-    ports:
-      - "2181:2181"
-    environment:
-        ZOO_MY_ID: 1
-        ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
-  zoo2:
-    image: zookeeper
-    depends_on:
-      zoo1
-    ports:
-      - "2182:2181"
-    environment:
-      ZOO_MY_ID: 2
-      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zoo3:2888:3888
-  zoo3:
-    image: zookeeper
-    depends_on:
-      zoo1
-    ports:
-      - "2183:2181"
-    environment:
-      ZOO_MY_ID: 3
-      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
+      image: zookeeper
+      ports:
+        - "2181:2181"
+      deploy:
+        mode: global
+        resources:
+          limits:
+            cpus: "0.2"
+            memory: 4096M
+        restart_policy:
+          condition: on-failure
+      environment:
+          ZOO_MY_ID: 1
+          ZOO_SERVERS: server.1=0.0.0.0:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+      networks:
+        - cloudera-webnet
+    zoo2:
+      image: zookeeper
+      depends_on:
+        - zoo1
+      ports:
+        - "2182:2181"
+      environment:
+        ZOO_MY_ID: 2
+        ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=0.0.0.0:2888:3888 server.3=zoo3:2888:3888
+      deploy:
+            mode: global
+            resources:
+              limits:
+                cpus: "0.2"
+                memory: 4096M
+            restart_policy:
+              condition: on-failure
+      networks:
+        - cloudera-webnet
+    zoo3:
+      image: zookeeper
+      depends_on:
+        - zoo1
+      ports:
+        - "2183:2181"
+      deploy:
+            mode: global
+            resources:
+              limits:
+                cpus: "0.2"
+                memory: 4096M
+            restart_policy:
+              condition: on-failure
+      environment:
+        ZOO_MY_ID: 3
+        ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=0.0.0.0:2888:3888
+      networks:
+        - cloudera-webnet
   # Here is our Kafka cluster. In swarm mode we can only scale in "global" mode (one kafka cluster per swarm node).
   kafka:
-    image: wurstmeister/kafka
+    image: afriedrichsen/kafka
     deploy:
       mode: global
     depends_on:
-      zoo1
+      - zoo1
     ports:
       - target: 9094
         published: 9094
@@ -84,5 +114,7 @@ services:
       KAFKA_CREATE_TOPICS: "LogProcessing:1:1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+     - cloudera-webnet
 networks:
   cloudera-webnet:
