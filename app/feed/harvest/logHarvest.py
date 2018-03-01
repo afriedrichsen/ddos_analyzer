@@ -76,7 +76,7 @@ def watch_directory(inputDir):
     try:
         while True:
             time.sleep(5)
-    except KeyboardInterupt:
+    except KeyboardInterrupt:
         observer.stop()
 
     observer.join()

@@ -39,6 +39,12 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-          - cloudera-webnet
+      - cloudera-webnet
+  harvester:
+    image: afriedrichsen/harvester:latest
+    depends_on:
+      - kafka
+    networks:
+      - cloudera-webnet
 networks:
   cloudera-webnet:

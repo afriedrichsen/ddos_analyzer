@@ -60,5 +60,12 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
      - cloudera-webnet
+ # Here is our log harvester. This container can be easily scaled.
+  harvester:
+    image: afriedrichsen/harvester:latest
+    depends_on:
+      - kafka
+    networks:
+      - cloudera-webnet
 networks:
   cloudera-webnet:
