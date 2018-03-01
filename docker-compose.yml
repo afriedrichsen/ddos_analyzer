@@ -26,13 +26,6 @@ services:
       - /data/ddos_analyzer:/data/core
     networks:
       - cloudera-webnet
-    deploy:
-      resources:
-        limits:
-          cpus: "0.2"
-          memory: 4096M
-      restart_policy:
-        condition: on-failure
   kafka:
     image: afriedrichsen/kafka
     depends_on:
@@ -45,3 +38,7 @@ services:
       KAFKA_CREATE_TOPICS: "LogProcessing:1:1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+          - cloudera-webnet
+networks:
+  cloudera-webnet:
