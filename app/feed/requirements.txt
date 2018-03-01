@@ -1,0 +1,6 @@
+argh==0.26.2
+configparser==3.5.0
+kafka-python==1.4.1
+pathtools==0.1.2
+PyYAML==3.12
+watchdog==0.8.3
