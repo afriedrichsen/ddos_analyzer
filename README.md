@@ -5,6 +5,17 @@ A "Big Data" application for tracking potential DDOS threats.
 
 Analyze log events for IP/host information and determine if that host is part of a DDOS attack, either ongoing or based on historical data.
 
+
+### Overview
+
+At its core, this analyzer tool runs on the Cloudera Hadoop stack. 
+
+Data is harvested from log files/sources using a (scalable) Python script. 
+
+Data is fed from the log files provided to the script to Apache Kafka. Apache Flume is used to further aggregate, index and filter the log messages sent by Kafka.
+
+Oozie jobs execute the necessary SQL to load the messages into Hive tables where analysis is conducted to identify if the user's IP is part of a DDOS campaign.
+
 ### Prerequisites
 
 The following tools are needed to run this demo/POC.
@@ -29,7 +40,7 @@ cd ddos_analyzer
 docker-compose up --build -d
 ```
 
-The initial build will take some time depending on your internet connection, but should only need to be done when starting the app initially.
+The initial build will take some time depending on your internet connection, but should only need to be done when starting the app initially. This is due to the size of the CDH Docker Image. An existing CDH instance can be used which cuts the deployment time significantly.
 
 #### Swarm Mode
 
@@ -43,9 +54,9 @@ docker stack deploy -c app-swarm.yml app
 
 ```
 
-## Deployment
+## Deployment Notes
 
-Add additional notes about how to deploy this on a live system
+When running "Swarm" mode the Kafka service should be distributed one node per server (deploy: mode: global in Docker).
 
 ## Built With
 
