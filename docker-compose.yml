@@ -55,6 +55,7 @@ services:
       context: ./app/feed/indexer
       dockerfile: Dockerfile
     depends_on:
+      - datalake
       - kafka
     networks:
       - cloudera-webnet

@@ -67,6 +67,7 @@ services:
   indexer:
     image: afriedrichsen/indexer:latest
     depends_on:
+      - datalake
       - kafka
     networks:
       - cloudera-webnet
