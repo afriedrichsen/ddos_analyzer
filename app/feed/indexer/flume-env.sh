@@ -28,7 +28,7 @@
 # Let Flume write raw event data and configuration information to its log files for debugging
 # purposes. Enabling these flags is not recommended in production,
 # as it may result in logging sensitive user information or encryption secrets.
-# export JAVA_OPTS="$JAVA_OPTS -Dorg.apache.flume.log.rawdata=true -Dorg.apache.flume.log.printconfig=true "
+export JAVA_OPTS="$JAVA_OPTS -Dorg.apache.flume.log.rawdata=true -Dorg.apache.flume.log.printconfig=true "
 
 # Note that the Flume conf directory is always included in the classpath.
-FLUME_CLASSPATH="/opt/flume/plugins.d/hadoop/hadoop-hdfs-3.0.0.jar"
+#FLUME_CLASSPATH="/opt/flume/plugins.d/hadoop/lib/hadoop-hdfs-3.0.0.jar"

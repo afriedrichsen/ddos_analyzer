@@ -16,7 +16,8 @@ RUN apk add --update unzip wget curl jq coreutils \
     && wget -qO- http://archive.apache.org/dist/flume/${FLUME_VERSION}/apache-flume-${FLUME_VERSION}-bin.tar.gz \
           | tar zxvf - -C /opt/flume --strip 1 \
     && mkdir -p /opt/flume/plugins.d/hadoop/lib \
-    && wget -q http://central.maven.org/maven2/org/apache/hadoop/hadoop-hdfs/3.0.0/hadoop-hdfs-3.0.0.jar -P /opt/flume/plugins.d/hadoop/lib/
+    && wget -qO- http://mirrors.ibiblio.org/apache/hadoop/common/hadoop-3.0.0/hadoop-3.0.0.tar.gz |
+          | tar zxvf - -C /opt/flume/conf/hadoop --strip 1
 
 ADD start-flume.sh /opt/flume/bin/start-flume
 ADD flume-env.sh /opt/flume/conf/flume-env.sh
