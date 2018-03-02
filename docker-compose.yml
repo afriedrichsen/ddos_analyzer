@@ -51,9 +51,7 @@ services:
     networks:
       - cloudera-webnet
   indexer:
-    build:
-      context: ./app/feed/indexer
-      dockerfile: Dockerfile
+    image: afriedrichsen/indexer:latest
     depends_on:
       - datalake
       - kafka
