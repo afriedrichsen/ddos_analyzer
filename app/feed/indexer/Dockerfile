@@ -18,7 +18,7 @@ RUN apk add --update unzip wget curl jq coreutils \
           | tar zxvf - -C /opt/flume --strip 1 \
     && mkdir -p /opt/flume/plugins.d/hadoop/lib \
     && wget -q http://mirrors.ibiblio.org/apache/hadoop/common/hadoop-3.0.0/hadoop-3.0.0.tar.gz \
-          | tar zxvf - -C /opt/flume/conf/hadoop --strip 1 \
+          | tar zxvf - -C /opt/flume/conf/hadoop --strip 1
 
 ADD start-flume.sh /opt/flume/bin/start-flume
 ADD flume-env.sh /opt/flume/conf/flume-env.sh
