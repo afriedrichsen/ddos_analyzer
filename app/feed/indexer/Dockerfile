@@ -6,8 +6,8 @@ ARG flume_agent_name=indexer1
 MAINTAINER Alex Friedrichsen afriedrichsen@me.com
 
 ENV FLUME_VERSION=$flume_version \
-    JAVA_HOME=/opt/java \
-    PATH=/opt/flume/bin:/opt/java/bin:$PATH \
+    JAVA_HOME=/opt/jdk \
+    PATH=/opt/flume/bin:$JAVA_HOME:$PATH \
     FLUME_AGENT_NAME=$flume_agent_name
 
 RUN apk add --update unzip wget curl jq coreutils \
@@ -20,10 +20,10 @@ ADD start-flume.sh /opt/flume/bin/start-flume
 
 ADD flume.conf /opt/flume/conf/flume.conf
 
-RUN chown daemon -Rf /opt
+#RUN chown daemon -Rf /opt
 
 # Let's be super secure (even though this Docker) and run this as a standard user.
-USER daemon
+#USER daemon
 
 WORKDIR /opt/flume
 
