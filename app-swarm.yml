@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.2"
 services:
 # Here is our image for the data lake backend (Cloudera Quickstart VM).
   datalake:
@@ -29,13 +29,9 @@ services:
     networks:
       - cloudera-webnet
     deploy:
-      resources:
-        limits:
-          cpus: "0.2"
-          memory: 4096M
       restart_policy:
         condition: on-failure
-  # Here is our Kafka cluster. In swarm mode we can only scale in "global" mode (one kafka cluster per swarm node).
+  # Here is our Kafka cluster. In swarm mode we can only scale in "global" mode (one kafka server/instance per swarm node/host).
   kafka:
     image: afriedrichsen/kafka
     deploy:
@@ -63,6 +59,13 @@ services:
  # Here is our log harvester. This container can be easily scaled.
   harvester:
     image: afriedrichsen/harvester:latest
+    depends_on:
+      - kafka
+    networks:
+      - cloudera-webnet
+  # Here is our log indexer (Apache Flume).
+  indexer:
+    image: afriedrichsen/indexer:latest
     depends_on:
       - kafka
     networks:

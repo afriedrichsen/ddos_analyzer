@@ -25,7 +25,7 @@ WITH SERDEPROPERTIES (
 )
 STORED AS TEXTFILE
 
-LOCATION '/user/cloudera/data';
+LOCATION '/user/cloudera/ddos_analyzer/events';
 
 -- We want to store our logs in HBase, which is designed to hold tables
 -- with billions of rows and millions of columns. HBase stores rows

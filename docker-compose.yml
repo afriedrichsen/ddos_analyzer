@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.2"
 services:
   datalake:
     image: cloudera/quickstart:latest
@@ -41,7 +41,19 @@ services:
     networks:
       - cloudera-webnet
   harvester:
-    image: afriedrichsen/harvester:latest
+    build:
+      context: ./app/feed/harvest
+      dockerfile: Dockerfile
+    depends_on:
+      - kafka
+    volumes:
+      - /deploy/services/volumes/cdh:/app/data/input
+    networks:
+      - cloudera-webnet
+  indexer:
+    build:
+      context: ./app/feed/indexer
+      dockerfile: Dockerfile
     depends_on:
       - kafka
     networks:

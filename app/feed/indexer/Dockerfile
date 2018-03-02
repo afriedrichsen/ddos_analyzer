@@ -1,7 +1,7 @@
 FROM anapsix/alpine-java:latest
 
 ARG flume_version=1.8.0
-ARG flume_agent_name=log_analyzer
+ARG flume_agent_name=indexer1
 
 MAINTAINER Alex Friedrichsen afriedrichsen@me.com
 
@@ -18,7 +18,7 @@ RUN apk add --update unzip wget curl jq coreutils \
 
 ADD ../start-flume.sh /opt/flume/bin/start-flume
 
-ADD flume-tail.conf /opt/flume/conf/flume.conf
+ADD flume.conf /opt/flume/conf/flume.conf
 
 RUN chown daemon -Rf /opt
 
