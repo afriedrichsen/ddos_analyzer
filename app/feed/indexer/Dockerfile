@@ -16,7 +16,7 @@ RUN apk add --update unzip wget curl jq coreutils \
     && wget -qO- http://archive.apache.org/dist/flume/${FLUME_VERSION}/apache-flume-${FLUME_VERSION}-bin.tar.gz \
           | tar zxvf - -C /opt/flume --strip 1
 
-ADD ../start-flume.sh /opt/flume/bin/start-flume
+ADD start-flume.sh /opt/flume/bin/start-flume
 
 ADD flume.conf /opt/flume/conf/flume.conf
 
