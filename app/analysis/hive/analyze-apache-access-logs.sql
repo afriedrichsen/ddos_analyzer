@@ -59,6 +59,27 @@ WITH SERDEPROPERTIES (
 )
 TBLPROPERTIES ('hbase.table.name' = 'access');
 
+
+-- Here is a table for hosts that we believes are part of a ddos campaign/attack.
+--
+CREATE EXTERNAL TABLE ddos_hosts(
+key STRING,          -- Unix time + ":" + unique identifier.
+host STRING,         -- The IP address of the host making the request.
+identity STRING,     -- ??? (raw log data)
+user STRING,         -- ??? (raw log data)
+time BIGINT,         -- Unix time, UTC.
+method STRING,       -- "GET", etc.
+path STRING,         -- "/logo.png", etc.
+protocol STRING,     -- "HTTP/1.1", etc.
+status SMALLINT,     -- 200, 404, etc.
+size BIGINT,         -- Response size, in bytes.
+referer_host STRING, -- "www.google.com", etc.
+referer STRING,      -- Full referrer string.
+agent STRING)        -- Full agent string.
+STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
+WITH SERDEPROPERTIES()
+TBLPROPERTIES('hbase.table.name' = 'access');
+
 -- Copy our data from raw Apache log files to HBase, cleaning it up as we go.  This is basically
 -- a pseudo-SQL query which calls a few Java helpers.
 INSERT OVERWRITE TABLE access_hbase
@@ -78,11 +99,6 @@ SELECT concat(cast(unix_timestamp(time, '[dd/MMM/yyyy:HH:mm:ss Z]') AS STRING), 
 FROM access
 WHERE unix_timestamp(time, '[dd/MMM/yyyy:HH:mm:ss Z]') IS NOT NULL;
 
--- Find the 50 most popular pages on the site.
-SELECT path, count(*) AS cnt
-  FROM access_hbase GROUP BY path
-  ORDER BY cnt DESC LIMIT 50;
-
 
 -- Find the 50 visiting hosts.
 SELECT host, count(*) AS cnt
@@ -90,9 +106,7 @@ FROM access_hbase GROUP BY host
 ORDER BY cnt DESC LIMIT 50;
 
 
--- Categorize our articles by year and count how many hits each year received.
-SELECT pubyear, count(*)
-  FROM (SELECT re_extract(path, '/articles/([0-9]+)/.*', 1) AS pubyear
-          FROM access_hbase) access
-  WHERE pubyear IS NOT NULL
-  GROUP BY pubyear;
+--Insert high traffic IPs into DDOS_Attacker table.
+INSERT OVERWRITE TABLE ddos_hosts
+SELECT
+FROM access_hbase

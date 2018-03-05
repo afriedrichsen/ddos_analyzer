@@ -19,7 +19,6 @@ Script can be run to either watch (tail) a single file or an entire directory of
 
 from kafka import KafkaProducer
 from kafka.errors import KafkaError
-import os
 import time
 import subprocess
 import select

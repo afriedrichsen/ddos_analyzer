@@ -6,20 +6,22 @@ ARG flume_agent_name=indexer1
 MAINTAINER Alex Friedrichsen afriedrichsen@me.com
 
 ENV FLUME_VERSION=$flume_version \
-    JAVA_HOME=/opt/jdk \
-    PATH=/opt/flume/bin:$JAVA_HOME:$PATH \
+    #JAVA_HOME=/opt/jdk \
+    PATH=/opt/flume/bin:$PATH \
     FLUME_AGENT_NAME=$flume_agent_name
 
-RUN apk add --update unzip wget curl jq coreutils \
+RUN apk add --update unzip wget jq coreutils \
     && mkdir -p /opt/flume/logs \
-    && mkdir -p /opt/flume/conf/hadoop \
+    && mkdir -p /opt/flume/conf \
+    && mkdir -p /opt/hadoop \
     && touch /opt/flume/logs/flume.log \
     && wget -qO- http://archive.apache.org/dist/flume/${FLUME_VERSION}/apache-flume-${FLUME_VERSION}-bin.tar.gz \
           | tar zxvf - -C /opt/flume --strip 1 \
-    && mkdir -p /opt/flume/plugins.d/hadoop/lib \
     && wget -qO- http://mirrors.sonic.net/apache/hadoop/common/hadoop-3.0.0/hadoop-3.0.0.tar.gz \
-          | tar zxvf - -C /opt/flume/conf/ --strip 1
-
+          | tar zxvf - -C /opt/hadoop --strip 1
+RUN which java
+ADD hadoop-env.sh /opt/hadoop
+ADD start-flume-docker.sh /opt/flume/bin/start-flume-docker
 ADD start-flume.sh /opt/flume/bin/start-flume
 ADD flume-env.sh /opt/flume/conf/flume-env.sh
 ADD flume.conf /opt/flume/conf/flume.conf
@@ -31,4 +33,4 @@ ADD flume.conf /opt/flume/conf/flume.conf
 
 WORKDIR /opt/flume
 
-ENTRYPOINT ["start-flume"]
+ENTRYPOINT ["start-flume-docker"]
