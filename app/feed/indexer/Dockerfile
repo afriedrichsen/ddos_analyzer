@@ -21,7 +21,7 @@ RUN apk add --update unzip wget jq coreutils \
           | tar zxvf - -C /opt/hadoop --strip 1
 RUN which java
 ADD hadoop-env.sh /opt/hadoop
-ADD hdfs-site.xml /opt/hadoop/etc/hadoop
+
 ADD start-flume-docker.sh /opt/flume/bin/start-flume-docker
 ADD start-flume.sh /opt/flume/bin/start-flume
 ADD flume-env.sh /opt/flume/conf/flume-env.sh
