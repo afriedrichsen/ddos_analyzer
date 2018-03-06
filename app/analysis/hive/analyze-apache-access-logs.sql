@@ -21,7 +21,7 @@ CREATE EXTERNAL TABLE access(
   agent STRING)
 ROW FORMAT SERDE 'org.apache.hadoop.hive.contrib.serde2.RegexSerDe'
 WITH SERDEPROPERTIES (
-  'input.regex' = '([^ ]*) ([^ ]*) ([^ ]*) (-|\\[[^\\]]*\\]) ([^ \"]*|\"[^\"]*\") (-|[0-9]*) (-|[0-9]*)(?: ([^ \"]*|\"[^\"]*\") ([^ \"]*|\"[^\"]*\"))?',
+  'input.regex' = '([^ ]*) ([^ ]*) ([^ ]*) (-|\\[[^\\]]*\\]) ([^ \"]*|\"[^\"]*\") (-|[0-9]*) (-|[0-9]*)(?: ([^ \"]*|\"[^\"]*\") ([^ \"]*|\"[^\"]*\"))?'
 )
 STORED AS TEXTFILE
 
@@ -106,7 +106,3 @@ FROM access_hbase GROUP BY host
 ORDER BY cnt DESC LIMIT 50;
 
 
---Insert high traffic IPs into DDOS_Attacker table.
-INSERT OVERWRITE TABLE ddos_hosts
-SELECT
-FROM access_hbase
