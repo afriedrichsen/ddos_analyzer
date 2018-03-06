@@ -1,7 +1,7 @@
 version: "3.2"
 services:
 # Here is our image for the data lake backend (Cloudera Quickstart VM).
-  datalake:
+  quickstart.cloudera:
     image: cloudera/quickstart:latest
     ports:
       - "8887:8888"   # Hue server
@@ -19,7 +19,7 @@ services:
       - "8032:8032"   # yarn resource manager access
       - "8042:8042"   # yarn node manager
       - "60010:60010" # hbase
-    hostname: lakeuat.cloudera
+    hostname: quickstart.cloudera
     privileged: true
     command: bash -c "/usr/bin/docker-quickstart"
     stdin_open: true
@@ -37,7 +37,7 @@ services:
     deploy:
       mode: global
     depends_on:
-      - zoo1
+      - quickstart.cloudera
     ports:
       - target: 9094
         published: 9094
@@ -67,7 +67,7 @@ services:
   indexer:
     image: afriedrichsen/indexer:latest
     depends_on:
-      - datalake
+      - quickstart.cloudera
       - kafka
     networks:
       - cloudera-webnet

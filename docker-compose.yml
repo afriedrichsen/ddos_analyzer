@@ -1,6 +1,6 @@
 version: "3.2"
 services:
-  datalake:
+  quickstart.cloudera:
     image: cloudera/quickstart:latest
     ports:
       - "8887:8888"   # Hue server
@@ -17,7 +17,7 @@ services:
       - "8032:8032"   # yarn resource manager access
       - "8042:8042"   # yarn node manager
       - "60010:60010" # hbase
-    hostname: lakeuat.cloudera
+    hostname: quickstart.cloudera
     privileged: true
     command: bash -c "/usr/bin/docker-quickstart"
     stdin_open: true
@@ -29,7 +29,7 @@ services:
   kafka:
     image: afriedrichsen/kafka
     depends_on:
-      - datalake
+      - quickstart.cloudera
     ports:
       - "9092:9092"
     environment:
@@ -47,13 +47,14 @@ services:
     depends_on:
       - kafka
     volumes:
+    # For simple demonstration, this is our "landing zone" for log files.
       - /deploy/services/volumes/cdh:/app/data/input
     networks:
       - cloudera-webnet
   indexer:
     image: afriedrichsen/indexer:latest
     depends_on:
-      - datalake
+      - quickstart.cloudera
       - kafka
     networks:
       - cloudera-webnet
