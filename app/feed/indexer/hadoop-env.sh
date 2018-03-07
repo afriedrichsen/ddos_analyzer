@@ -1,5 +1,5 @@
 #!/bin/bash
-export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre/
+export JAVA_HOME=/opt/jdk
 export HADOOP_HOME=/opt/hadoop # Change it depends on Hadoop installation directory
 export HADOOP_INSTALL=$HADOOP_HOME
 export HADOOP_MAPRED_HOME=$HADOOP_HOME

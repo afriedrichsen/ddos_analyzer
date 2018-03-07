@@ -17,6 +17,7 @@ services:
       - "8032:8032"   # yarn resource manager access
       - "8042:8042"   # yarn node manager
       - "60010:60010" # hbase
+      - "2181:2181"   # ZooKeeper
     hostname: quickstart.cloudera
     privileged: true
     command: bash -c "/usr/bin/docker-quickstart"

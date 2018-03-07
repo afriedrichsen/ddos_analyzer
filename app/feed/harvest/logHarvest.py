@@ -33,7 +33,7 @@ def write_message(message):
     print(message)
     # Here is our connection to Kafka.
     # In prod, this setting is derived from ConfigParser object.
-    producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
+    producer = KafkaProducer(bootstrap_servers=['kafka:9092'])
     future = producer.send('LogProcessing', message)
     try:
         record_metadata = future.get(timeout=10)
@@ -74,7 +74,7 @@ def watch_directory(inputDir):
     observer.start()
     try:
         while True:
-            time.sleep(5)
+            time.sleep(1)
     except KeyboardInterrupt:
         observer.stop()
 
