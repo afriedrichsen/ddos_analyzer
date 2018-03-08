@@ -102,4 +102,4 @@ SELECT key, host,CURRENT_TIMESTAMP()
 from access_hbase
 WHERE host is not null
 AND host not in ('NULL')
-group by host having count(*) > 30
+group by key, host having count(*) > 30
