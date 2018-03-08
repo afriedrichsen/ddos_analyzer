@@ -5,8 +5,8 @@ services:
     ports:
       - "9092:9092"
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: 192.168.86.32
-      KAFKA_ZOOKEEPER_CONNECT: 192.168.86.57:2181
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.0.4
+      KAFKA_ZOOKEEPER_CONNECT: localhost:2181
       KAFKA_CREATE_TOPICS: "LogProcessing:1:1"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -20,7 +20,7 @@ services:
       - kafka
     volumes:
     # For simple demonstration, this is our "landing zone" for log files.
-      - /Users/adf/drop:/app/data/input
+      - /deploy/volumes/cdh:/app/data/input
     networks:
       - cloudera-webnet
 
