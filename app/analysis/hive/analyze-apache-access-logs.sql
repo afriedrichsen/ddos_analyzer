@@ -65,17 +65,8 @@ TBLPROPERTIES ('hbase.table.name' = 'access');
 CREATE EXTERNAL TABLE ddos_hosts(
 key STRING,          -- Unix time + ":" + unique identifier.
 host STRING,         -- The IP address of the host making the request.
-identity STRING,     -- ??? (raw log data)
-user STRING,         -- ??? (raw log data)
-time BIGINT,         -- Unix time, UTC.
-method STRING,       -- "GET", etc.
-path STRING,         -- "/logo.png", etc.
-protocol STRING,     -- "HTTP/1.1", etc.
-status SMALLINT,     -- 200, 404, etc.
-size BIGINT,         -- Response size, in bytes.
-referer_host STRING, -- "www.google.com", etc.
-referer STRING,      -- Full referrer string.
-agent STRING)        -- Full agent string.
+date_added BIGINT    -- Unix time
+)        -- Full agent string.
 STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
 WITH SERDEPROPERTIES()
 TBLPROPERTIES('hbase.table.name' = 'access');
@@ -106,3 +97,9 @@ FROM access_hbase GROUP BY host
 ORDER BY cnt DESC LIMIT 50;
 
 
+INSERT OVERWRITE TABLE ddos_hosts
+SELECT key, host,CURRENT_TIMESTAMP()
+from access_hbase
+WHERE host is not null
+AND host not in ('NULL')
+group by host having count(*) > 30

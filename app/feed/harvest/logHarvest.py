@@ -29,16 +29,19 @@ from watchdog.events import FileSystemEventHandler
 
 
 # Function that writes data to Kafka (producer).
-def write_message(message):
-    print(message)
+def write_file_to_message(inputFile):
+   # print(message)
     # Here is our connection to Kafka.
     # In prod, this setting is derived from ConfigParser object.
-    producer = KafkaProducer(bootstrap_servers=['kafka:9092'])
-    future = producer.send('LogProcessing', message)
-    try:
-        record_metadata = future.get(timeout=10)
-    except KafkaError:
-        pass
+    producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
+
+
+    for row in open(inputFile,'r'):
+        print(row.encode('utf-8'))
+        producer.send('LogProcessing',row.encode('utf-8'))
+
+    producer.flush()
+
 
 # Function that tails individual file and returns rows to Kafka message service.
 def watch_file(inputFile):
@@ -74,7 +77,7 @@ def watch_directory(inputDir):
     observer.start()
     try:
         while True:
-            time.sleep(1)
+           pass
     except KeyboardInterrupt:
         observer.stop()
 
@@ -94,10 +97,7 @@ class Handler(FileSystemEventHandler):
         # Take any action here when a file is first created.
             targetFile = str(event.src_path)
             print("File "+ targetFile + " created/loaded into directory...")
-            for row in open(targetFile,'r'):
-                #Write to Kafka.
-                print(row)
-                write_message(row.encode())
+            write_file_to_message(targetFile)
             # Move log file to "processed" directory.
             shutil.move(targetFile, './data/processed/')
 
