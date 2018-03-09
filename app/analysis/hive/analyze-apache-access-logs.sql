@@ -68,8 +68,8 @@ host STRING,         -- The IP address of the host making the request.
 date_added BIGINT    -- Unix time
 )        -- Full agent string.
 STORED BY 'org.apache.hadoop.hive.hbase.HBaseStorageHandler'
-WITH SERDEPROPERTIES()
-TBLPROPERTIES('hbase.table.name' = 'access');
+WITH SERDEPROPERTIES('hbase.columns.mapping' = ':key,m:host,m:date_added')
+TBLPROPERTIES('hbase.table.name' = 'ddos_hosts');
 
 -- Copy our data from raw Apache log files to HBase, cleaning it up as we go.  This is basically
 -- a pseudo-SQL query which calls a few Java helpers.
