@@ -4,7 +4,10 @@ MAINTAINER Alex Friedrichsen afriedrichsen@me.com
 
 WORKDIR /app
 
+
 ADD . /app
+
+RUN mkdir -p ./data/input
 
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
