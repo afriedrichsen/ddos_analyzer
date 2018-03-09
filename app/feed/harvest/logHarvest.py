@@ -33,7 +33,7 @@ def write_file_to_message(inputFile):
    # print(message)
     # Here is our connection to Kafka.
     # In prod, this setting is derived from ConfigParser object.
-    producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
+    producer = KafkaProducer(bootstrap_servers=['kafka:9092'])
 
 
     for row in open(inputFile,'r'):
